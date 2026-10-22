@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download and verify original media
+      - name: Assemble and verify original media
         run: python scripts/import_media.py
       - name: Commit verified media
         run: |
@@ -20,3 +20,4 @@ jobs:
           git add assets/
           git commit -m "Import verified original carnival map and audio"
           git push
+
