@@ -1,6 +1,6 @@
 # Twilight at the Ticket Booth
 
-Player invitation for The Wild Beyond the Witchlight.
+Player invitation.
 
 Live site: https://sdmccrux.github.io/witchlight/
 
