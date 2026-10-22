@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Twilight at the Ticket Booth — Player Primer</title>
+
+
+
+  <!-- Google Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+
+
+  <!-- Tailwind CSS -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+  <style>
+
+    :root {
+
+      --parchment-base: #fcf9f2;
+
+      --parchment-panel: #f5eedf;
+
+      --parchment-highlight: #f8edd7;
+
+      --gold-primary: #b8933b;
+
+      --gold-deep: #8f6c1e;
+
+      --gold-light: #f1d387;
+
+      --gold-border: #cebf9e;
+
+      --ink-dark: #221335;
+
+      --ink-body: #281a3b;
+
+      --wine-accent: #6c234b;
+
+      --purple-box: #211238;
+
+      --purple-box-border: #c49d41;
+
+      --twilight-bg: #090510;
+
+    }
+
+
+
+    * {
+
+      box-sizing: border-box;
+
+      -webkit-font-smoothing: antialiased;
+
+    }
+
+
+
+    body {
+
+      background-color: var(--twilight-bg);
+
+      background-image: 
+
+        radial-gradient(circle at 50% 15%, rgba(93, 44, 138, 0.35) 0%, transparent 60%),
+
+        radial-gradient(circle at 15% 75%, rgba(184, 147, 59, 0.08) 0%, transparent 45%),
+
+        radial-gradient(circle at 85% 85%, rgba(77, 30, 110, 0.25) 0%, transparent 50%),
+
+        radial-gradient(circle at 50% 50%, #150c26 0%, #07030c 100%);
+
+      font-family: 'EB Garamond', Georgia, serif;
+
+      color: var(--ink-body);
+
+      margin: 0;
+
+      padding: 24px 12px 36px 12px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      min-height: 100vh;
+
+      position: relative;
+
+      overflow-x: hidden;
+
+    }
+
+
+
+    /* Ambient Starlight Vignette */
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      background-image: radial-gradient(rgba(245, 238, 223, 0.12) 1px, transparent 1px);
+
+      background-size: 32px 32px;
+
+      opacity: 0.6;
+
+      pointer-events: none;
+
+      z-index: 0;
+
+    }
+
+
+
+    .font-cinzel-dec {
+
+      font-family: 'Cinzel Decorative', Georgia, serif;
+
+    }
+
+
+
+    .font-cinzel {
+
+      font-family: 'Cinzel', Georgia, serif;
+
+    }
+
+
+
+    /* Slender Artifact Parchment Card */
+
+    .ticket-folio {
+
+      position: relative;
+
+      background-color: var(--parchment-base);
+
+      width: 100%;
+
+      max-width: 620px;
+
+      padding: 28px 24px 20px 24px;
+
+      border: 2px solid var(--gold-primary);
+
+      box-shadow: 
+
+        0 0 0 1px rgba(184, 147, 59, 0.25),
+
+        0 0 25px rgba(184, 147, 59, 0.15),
+
+        0 24px 50px rgba(0, 0, 0, 0.85);
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 12px;
+
+      z-index: 1;
+
+    }
+
+
+
+    /* Inner Double-Line Golden Frame */
+
+    .ticket-inner-frame {
+
+      position: absolute;
+
+      inset: 6px;
+
+      border: 1px solid rgba(184, 147, 59, 0.45);
+
+      pointer-events: none;
+
+      z-index: 2;
+
+    }
+
+
+
+    /* Ticket Notches */
+
+    .ticket-notch {
+
+      position: absolute;
+
+      width: 22px;
+
+      height: 22px;
+
+      background-color: var(--twilight-bg);
+
+      border-radius: 50%;
+
+      top: 108px;
+
+      z-index: 5;
+
+      box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.9);
+
+    }
+
+
+
+    .notch-left {
+
+      left: -12px;
+
+      border-right: 2px solid var(--gold-primary);
+
+      border-top: 1.5px solid var(--gold-primary);
+
+      border-bottom: 1.5px solid var(--gold-primary);
+
+    }
+
+
+
+    .notch-right {
+
+      right: -12px;
+
+      border-left: 2px solid var(--gold-primary);
+
+      border-top: 1.5px solid var(--gold-primary);
+
+      border-bottom: 1.5px solid var(--gold-primary);
+
+    }
+
+
+
+    /* Filigree Corner Accents */
+
+    .corner-bracket {
+
+      position: absolute;
+
+      width: 26px;
+
+      height: 26px;
+
+      pointer-events: none;
+
+      z-index: 3;
+
+    }
+
+
+
+    .bracket-tl { top: 9px; left: 9px; }
+
+    .bracket-tr { top: 9px; right: 9px; transform: scaleX(-1); }
+
+    .bracket-bl { bottom: 9px; left: 9px; transform: scaleY(-1); }
+
+    .bracket-br { bottom: 9px; right: 9px; transform: scale(-1); }
+
+
+
+    /* Dropcap */
+
+    .dropcap {
+
+      float: left;
+
+      font-family: 'Cinzel Decorative', Georgia, serif;
+
+      font-size: 2.75rem;
+
+      line-height: 0.78;
+
+      padding-top: 5px;
+
+      padding-right: 8px;
+
+      color: var(--wine-accent);
+
+      font-weight: 700;
+
+    }
+
+
+
+    /* Three Rules Grid with Uniform Card Title Baseline */
+
+    .rules-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      gap: 9px;
+
+    }
+
+
+
+    @media (max-width: 520px) {
+
+      .rules-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+
+      }
+
+    }
+
+
+
+    .rule-card {
+
+      background-color: #ffffff;
+
+      border: 1px solid var(--gold-border);
+
+      border-top: 2.5px solid var(--gold-primary);
+
+      padding: 9px 9px 10px 9px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+
+    }
+
+
+
+    .rule-card-title {
+
+      font-family: 'Cinzel', serif;
+
+      font-size: 0.76rem;
+
+      font-weight: 700;
+
+      color: var(--ink-dark);
+
+      letter-spacing: 0.05em;
+
+      text-transform: uppercase;
+
+      margin: 0 0 6px 0;
+
+      padding-bottom: 5px;
+
+      border-bottom: 1px solid #ebdcc5;
+
+      min-height: 2.55em;
+
+      display: flex;
+
+      align-items: flex-start;
+
+      line-height: 1.25;
+
+    }
+
+
+
+    /* Stolen Table */
+
+    .stolen-table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+      border: 1.5px solid var(--gold-primary);
+
+      background-color: #ffffff;
+
+    }
+
+
+
+    .stolen-table th {
+
+      background-color: var(--purple-box);
+
+      color: #f7eed8;
+
+      font-family: 'Cinzel', serif;
+
+      font-size: 0.72rem;
+
+      letter-spacing: 0.06em;
+
+      text-transform: uppercase;
+
+      padding: 5px 8px;
+
+      border-bottom: 1.5px solid var(--gold-primary);
+
+    }
+
+
+
+    .stolen-table td {
+
+      padding: 4.5px 8px;
+
+      font-size: 0.83rem;
+
+      line-height: 1.25;
+
+      border-bottom: 1px solid #ede1cb;
+
+      color: var(--ink-dark);
+
+      vertical-align: middle;
+
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+    }
+
+
+
+    .stolen-table tbody tr:nth-child(even) td {
+
+      background-color: #faf5eb;
+
+    }
+
+
+
+    /* Interactive Tap/Hover Subtle Gold Highlights */
+
+    .stolen-table tbody tr {
+
+      cursor: pointer;
+
+    }
+
+
+
+    .stolen-table tbody tr:hover td {
+
+      background-color: #f6eedb !important;
+
+    }
+
+
+
+    .stolen-table tbody tr.row-active td {
+
+      background-color: #f3e6c3 !important;
+
+      color: #170b24;
+
+      font-weight: 500;
+
+    }
+
+
+
+    /* Deep Royal Plum Box */
+
+    .purple-callout-box {
+
+      background-color: var(--purple-box);
+
+      border: 1.5px solid var(--purple-box-border);
+
+      box-shadow: 0 0 14px rgba(184, 147, 59, 0.18), inset 0 0 12px rgba(0, 0, 0, 0.45);
+
+      padding: 12px 14px;
+
+      color: #ede3fa;
+
+    }
+
+
+
+    /* Print Formatting */
+
+    @media print {
+
+      body {
+
+        background: transparent !important;
+
+        padding: 0 !important;
+
+      }
+
+      body::before, .no-print, .ticket-notch {
+
+        display: none !important;
+
+      }
+
+      .ticket-folio {
+
+        max-width: 100% !important;
+
+        border: 1.5px solid var(--gold-primary) !important;
+
+        box-shadow: none !important;
+
+        padding: 10mm 12mm !important;
+
+        margin: 0 !important;
+
+      }
+
+      @page {
+
+        margin: 8mm;
+
+      }
+
+    }
+
+  </style>
+
+
+
+
+<style>
+    .ticket-transition[hidden] { display: none !important; }
+    .ticket-transition { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; background: rgba(9,5,16,.9); animation: ticket-backdrop .25s ease-out both; }
+    .ticket-transition-inner { width: min(100%, 580px); text-align: center; animation: ticket-rise .65s cubic-bezier(.16,1,.3,1) both; }
+    .ticket-transition img { display: block; width: 100%; height: auto; filter: drop-shadow(0 20px 36px rgba(0,0,0,.6)); }
+    @keyframes ticket-backdrop { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes ticket-rise { from { transform: translateY(75vh) rotate(-10deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .ticket-transition, .ticket-transition-inner { animation: none; } }
+    @media print { .ticket-transition { display: none !important; } }
+  </style>
+<style>
+    .carnival-map { margin: 2px 0; padding: 10px 0; border-top: 1px solid var(--gold-border); border-bottom: 1px solid var(--gold-border); }
+    .carnival-map summary { cursor: pointer; font-size: .85rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-dark); }
+    .carnival-map summary::marker { color: var(--gold-deep); }
+    .carnival-map summary:focus-visible { outline: 2px solid var(--wine-accent); outline-offset: 4px; }
+    .carnival-map[open] summary { margin-bottom: 12px; }
+    .map-disclosure-hint { margin-left: 8px; font: italic .75rem Georgia, serif; letter-spacing: 0; text-transform: none; color: var(--wine-accent); }
+    .carnival-map[open] .map-disclosure-hint { display: none; }
+    .map-preview { display: block; position: relative; overflow: hidden; padding: 4px; border: 2px solid #9d7936; background: #211238; box-shadow: 0 0 0 1px #d2b575, inset 0 0 0 1px #d2b575; color: #f7eed8; }
+    .map-preview img { display: block; width: 100%; height: auto; }
+    .map-preview:focus-visible { outline: 3px solid var(--wine-accent); outline-offset: 4px; }
+    .map-lightbox { position: fixed; inset: 0; width: 100vw; max-width: none; height: 100%; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: #09070d; color: #f5eedf; overflow: hidden; }
+    .map-lightbox::backdrop { background: #09070d; }
+    .map-toolbar { position: absolute; z-index: 2; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 8px; padding: max(10px,env(safe-area-inset-top)) 12px 10px; background: #130d1d; border-bottom: 1px solid #65502d; }
+    .map-toolbar h2 { margin: 0 auto 0 0; font-size: .8rem; letter-spacing: .04em; }
+    .map-toolbar button, .map-help a { border: 1px solid #806332; color: #f1d387; background: #21162c; border-radius: 3px; font: inherit; cursor: pointer; }
+    .map-toolbar button { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 1rem; }
+    .map-toolbar button:focus-visible, .map-help a:focus-visible { outline: 2px solid #f1d387; outline-offset: 2px; }
+    .map-toolbar output { min-width: 43px; font-size: .8rem; text-align: center; font-variant-numeric: tabular-nums; }
+    .map-stage { position: absolute; inset: calc(66px + env(safe-area-inset-top)) 12px calc(48px + env(safe-area-inset-bottom)); overflow: hidden; touch-action: none; user-select: none; cursor: zoom-in; }
+    .map-stage.is-zoomed { cursor: grab; }
+    .map-stage.is-zoomed:active { cursor: grabbing; }
+    .map-stage img { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; will-change: transform; }
+    .map-help { position: absolute; bottom: 0; left: 0; right: 0; min-height: 44px; margin: 0; padding: 8px 12px max(8px,env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; font-size: .85rem; color: #d0c6db; }
+    .map-help a { padding: 3px 8px; text-decoration: none; }
+    @media (max-width: 480px) { .map-toolbar { gap: 4px; padding-left: 8px; padding-right: 8px; } .map-toolbar h2 { font-size: .65rem; max-width: 82px; } .map-toolbar button { padding: 5px 7px; } .map-toolbar output { min-width: 36px; font-size: .7rem; } .map-help { font-size: .75rem; } }
+    @media print { .map-lightbox { display: none !important; } }
+  </style>
+<style>
+    .dice-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin: 9px 0; }
+    .roll-d8 { display: inline-flex; align-items: center; gap: 9px; padding: 5px 13px 5px 8px; min-height: 44px; border: 1px solid var(--gold-primary); background: var(--purple-box); color: #f1d387; font-size: .76rem; font-weight: 700; letter-spacing: .06em; cursor: pointer; }
+    .roll-d8:hover { background: #321752; }
+    .roll-d8:disabled { cursor: wait; }
+    .roll-d8:focus-visible, .stolen-table tr:focus-visible { outline: 2px solid var(--wine-accent); outline-offset: 3px; }
+    .d8-die { position: relative; display: grid; place-items: center; width: 30px; height: 33px; flex-shrink: 0; }
+    .d8-die svg { position: absolute; inset: 0; width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.1; }
+    .d8-die > span { position: relative; margin-top: 7px; font: bold 12px Georgia, serif; }
+    .is-rolling .d8-die { animation: tumble-d8 .15s ease-in-out infinite alternate; }
+    .dice-result { margin: 0; flex: 1 1 180px; color: var(--wine-accent); font-size: .9rem; line-height: 1.25; }
+    @keyframes tumble-d8 { from { transform: rotate(-14deg) translateY(-2px); } to { transform: rotate(14deg) translateY(1px); } }
+    @media (prefers-reduced-motion: reduce) { .is-rolling .d8-die { animation: none; } }
+    @media print { .dice-controls { display: none !important; } }
+  </style>
+<style>
+    .roll-d8 { min-height: 36px; padding: 2px 5px; border: 0; background: transparent; color: var(--wine-accent); font-size: .72rem; gap: 6px; white-space: nowrap; }
+    .roll-d8:hover { background: var(--parchment-highlight); }
+    .roll-d8 .d8-die { width: 25px; height: 28px; }
+    .dice-result { margin: 5px 0 9px; min-height: 1.3em; font-size: .8rem; font-style: italic; color: var(--wine-accent); }
+    .is-rolling .d8-die { animation: none; }
+    .dice-stage[hidden] { display: none !important; }
+    .dice-stage { position: fixed; inset: 0; z-index: 120; pointer-events: none; }
+    .dice-stage canvas { display: block; width: 100%; height: 100%; }
+    @media print { .roll-d8,.dice-stage { display: none !important; } }
+  </style>
+<style>
+    .dice-notes { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 3px 12px; margin: 5px 0 9px; }
+    .dice-instruction { margin: 0; font-size: .76rem; font-style: italic; color: var(--wine-accent); }
+    .dice-notes .dice-result { margin: 0; min-height: 0; flex: 0 1 auto; text-align: right; font-size: .78rem; }
+    .dice-notes .dice-result:empty { display: none; }
+    body { padding-bottom: 78px; }
+    .music-toggle { position: fixed; bottom: max(14px,env(safe-area-inset-bottom)); right: max(14px,env(safe-area-inset-right)); z-index: 20; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 13px; border: 1px solid #8f7138; border-radius: 3px; background: rgba(22,12,35,.94); color: #e8cf94; box-shadow: 0 3px 14px rgba(0,0,0,.25); font-size: .7rem; font-weight: 600; letter-spacing: .04em; cursor: pointer; }
+    .music-toggle:hover { background: #321752; }
+    .music-toggle:focus-visible { outline: 2px solid #f1d387; outline-offset: 3px; }
+    .music-toggle[aria-pressed="true"] .music-symbol { color: #fff1c9; }
+    .music-toggle:disabled { opacity: .65; cursor: wait; }
+    .music-sr-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @media (max-width: 520px) { .dice-notes .dice-result { text-align: left; } }
+    @media print { .music-toggle,.music-sr-status { display: none !important; } }
+  </style>
+<style>
+    .music-toggle { width: 44px; height: 44px; min-height: 44px; padding: 0; gap: 0; opacity: .85; }
+    .music-toggle:hover, .music-toggle:focus-visible { opacity: 1; }
+    #music-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .music-toggle .music-pause-icon { display: none; }
+    .music-toggle[aria-pressed="true"] .music-symbol { display: none; }
+    .music-toggle[aria-pressed="true"] .music-pause-icon { display: block; }
+  </style>
+<style>
+    .narration-controls { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin: -3px 0 7px; }
+    .narration-toggle,.narration-stop { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 4px 7px; border: 0; background: transparent; color: var(--wine-accent); font: italic .8rem Georgia,serif; cursor: pointer; }
+    .narration-stop { min-width: 36px; font-style: normal; font-size: .7rem; }
+    .narration-stop[hidden] { display: none; }
+    .narration-toggle:hover,.narration-stop:hover { background: rgba(184,147,59,.12); }
+    .narration-toggle:focus-visible,.narration-stop:focus-visible { outline: 2px solid var(--wine-accent); outline-offset: 2px; }
+    .narration-toggle:disabled { opacity: .6; cursor: wait; }
+    .narration-pause-icon { display: none; }
+    .narration-toggle[aria-pressed="true"] .narration-play-icon { display: none; }
+    .narration-toggle[aria-pressed="true"] .narration-pause-icon { display: block; }
+    @media print { .narration-controls { display: none !important; } }
+  </style>
+</head>
+
+<body>
+
+
+
+  <!-- Slender Ticket Folio Container -->
+
+  <main class="ticket-folio">
+
+
+
+    <!-- Inner Frame -->
+
+    <div class="ticket-inner-frame"></div>
+
+
+
+    <!-- Ticket Notch Cutouts -->
+
+    <div class="ticket-notch notch-left"></div>
+
+    <div class="ticket-notch notch-right"></div>
+
+
+
+    <!-- Filigree Corner Brackets -->
+
+    <svg class="corner-bracket bracket-tl" viewBox="0 0 32 32" fill="none">
+
+      <path d="M2 28V6C2 3.79 3.79 2 6 2H28" stroke="#b8933b" stroke-width="2"/>
+
+      <path d="M6 22V8C6 6.89 6.89 6 8 6H22" stroke="#a47e2b" stroke-width="1" stroke-dasharray="2 2"/>
+
+      <circle cx="8" cy="8" r="2.5" fill="#b8933b"/>
+
+    </svg>
+
+    <svg class="corner-bracket bracket-tr" viewBox="0 0 32 32" fill="none">
+
+      <path d="M2 28V6C2 3.79 3.79 2 6 2H28" stroke="#b8933b" stroke-width="2"/>
+
+      <path d="M6 22V8C6 6.89 6.89 6 8 6H22" stroke="#a47e2b" stroke-width="1" stroke-dasharray="2 2"/>
+
+      <circle cx="8" cy="8" r="2.5" fill="#b8933b"/>
+
+    </svg>
+
+    <svg class="corner-bracket bracket-bl" viewBox="0 0 32 32" fill="none">
+
+      <path d="M2 28V6C2 3.79 3.79 2 6 2H28" stroke="#b8933b" stroke-width="2"/>
+
+      <path d="M6 22V8C6 6.89 6.89 6 8 6H22" stroke="#a47e2b" stroke-width="1" stroke-dasharray="2 2"/>
+
+      <circle cx="8" cy="8" r="2.5" fill="#b8933b"/>
+
+    </svg>
+
+    <svg class="corner-bracket bracket-br" viewBox="0 0 32 32" fill="none">
+
+      <path d="M2 28V6C2 3.79 3.79 2 6 2H28" stroke="#b8933b" stroke-width="2"/>
+
+      <path d="M6 22V8C6 6.89 6.89 6 8 6H22" stroke="#a47e2b" stroke-width="1" stroke-dasharray="2 2"/>
+
+      <circle cx="8" cy="8" r="2.5" fill="#b8933b"/>
+
+    </svg>
+
+
+
+    <!-- 1. Prologue Section -->
+
+    <section class="bg-[var(--parchment-panel)] border-y border-[var(--gold-primary)] px-4 py-3 relative">
+      <div class="narration-controls">
+        <button id="narration-toggle" class="narration-toggle" type="button" aria-label="Listen to the opening" aria-pressed="false" aria-controls="opening-narration">
+          <svg class="narration-play-icon" aria-hidden="true" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="m5 3 12 7-12 7Z"/></svg>
+          <svg class="narration-pause-icon" aria-hidden="true" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3h4v14H4Zm8 0h4v14h-4Z"/></svg>
+          <span id="narration-label">Listen to the opening</span>
+        </button>
+        <button id="narration-stop" class="narration-stop" type="button" aria-label="Stop narration and return to the beginning" title="Stop narration" hidden>■</button>
+        <span id="narration-status" class="music-sr-status" role="status" aria-live="polite"></span>
+      </div>
+
+
+      <p class="text-[0.89rem] leading-relaxed text-justify text-[#261938] m-0">
+
+        <span class="dropcap">O</span>nce every eight years, a traveling extravaganza known as the Witchlight Carnival visits your world. You carry a dim memory of sneaking past its gates as a child without buying a ticket. A night of Impossible wonders that ended in quiet heartbreak when something precious of yours was lost. You tried to find it, but the elven carnival owners where decidedly unhelpful. As the years passed, the ache faded and you gave less and less thought to those childhood events. Yet now, for reasons you can't explain, the longing to retrieve that which you have lost has resurfaced, as though an old spell has faded away, allowing you to feel the loss as sharply as if it happened yesterday.
+
+      </p>
+
+
+
+      <p class="text-[0.89rem] leading-relaxed text-justify text-[#261938] mt-2 mb-0">
+
+        The Witchlight Carnival has returned. You find yourself standing near a ticket booth by the entrance at twilight, as the carnival is about to open. Two strangers stand beside you wearing your same troubled look. Without knowing how or why, you sense that they each have lost something too. Perhaps fate has brought you together.
+
+      </p>
+
+
+
+      <div class="mt-2.5 pt-1.5 border-t border-[var(--gold-border)] text-center flex items-center justify-center gap-2">
+
+        <span class="text-[var(--gold-deep)] text-xs">✦</span>
+
+        <p class="font-serif italic text-[0.87rem] text-[var(--wine-accent)] font-semibold m-0">
+
+          “Silly little screeching cricket, you forgot to buy a ticket... Nothing's free and nothing's lost. Every visit has its cost.”
+
+        </p>
+
+        <span class="text-[var(--gold-deep)] text-xs">✦</span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- 2. The Three Ancient Rules (3-Column Grid) -->
+
+  
+
+    <section class="rules-grid">
+
+      <!-- Rule of Hospitality -->
+
+      <div class="rule-card">
+
+        <h3 class="rule-card-title">
+
+          Rule of Hospitality
+
+        </h3>
+
+        <p class="text-[0.79rem] leading-snug text-[#2f2042] m-0 flex-1">
+
+          When a friend, an enemy, or a stranger enters your home, you are expected to be gracious and accommodating to them until such time as they prove, by their words or actions, undeserving of such hospitality.
+
+        </p>
+
+      </div>
+
+
+
+      <!-- Rule of Ownership -->
+
+      <div class="rule-card">
+
+        <h3 class="rule-card-title">
+
+          Rule of Ownership
+
+        </h3>
+
+        <p class="text-[0.79rem] leading-snug text-[#2f2042] m-0 flex-1">
+
+          You must not steal from a friend, an enemy, or a stranger. To take something which does not belong to you without the rightful owner's permission is a crime and an unforgivable breach of etiquette.
+
+        </p>
+
+      </div>
+
+
+
+      <!-- Rule of Reciprocity -->
+
+      <div class="rule-card">
+
+        <h3 class="rule-card-title">
+
+          Rule of Reciprocity
+
+        </h3>
+
+        <p class="text-[0.79rem] leading-snug text-[#2f2042] m-0 flex-1">
+
+          When a friend, an enemy, or a stranger offers you a gift, you are obliged to accept it and offer something of comparable value (be it a gift or a service) in return. Such reciprocation need not happen immediately.
+
+        </p>
+
+      </div>
+
+    </section>
+
+    <details id="carnival-map" class="carnival-map" open>
+      <summary class="font-cinzel">Carnival Map <span class="map-disclosure-hint">Tap to explore</span></summary>
+      <a id="inspect-map" class="map-preview" href="assets/carnival-map.png" aria-haspopup="dialog" aria-controls="map-lightbox" aria-label="Open full-screen carnival map">
+        <img src="assets/carnival-map-preview.webp" alt="Illustrated visitor map of the Witchlight Carnival, showing its attractions, paths and waterways." width="1100" height="775" decoding="async">
+      </a>
+    </details>
+
+
+
+    <!-- 3. What Was Stolen From You? Table -->
+
+    <section>
+
+      <div class="flex flex-wrap items-baseline justify-between border-b-[1.5px] border-[var(--ink-dark)] pb-1 mb-1.5 gap-1">
+
+        <h2 class="font-cinzel text-[0.86rem] font-bold tracking-wide uppercase text-[var(--ink-dark)] m-0">
+
+          WHAT WAS STOLEN FROM YOU?
+
+        </h2>
+
+        <button id="roll-d8" class="roll-d8 font-cinzel" type="button" aria-label="Roll a d8 to choose a stolen piece" aria-controls="table-body">
+          <span class="d8-die" aria-hidden="true"><svg viewBox="0 0 40 44" fill="none"><path d="M20 2 38 15 33 34 20 42 7 34 2 15Z"/><path d="M20 2 7 34H33L20 2ZM2 15H38M7 34 20 42 33 34"/></svg><span id="d8-face">8</span></span>
+          <span>Roll 1d8</span>
+        </button>
+
+      </div>
+
+
+
+      
+      
+
+      <div class="dice-notes">
+        <p class="dice-instruction">Roll 1d8 or choose for yourself during Session Zero</p>
+        <p id="d8-result" class="dice-result" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
+      <table class="stolen-table">
+
+        <thead>
+
+          <tr>
+
+            <th class="w-[8%] text-center">D8</th>
+
+            <th class="w-[32%] text-left">YOUR STOLEN PIECE</th>
+
+            <th class="w-[60%] text-left">THE LINGERING MARK ON YOUR CHARACTER</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="table-body">
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">1</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Ability to Keep Secrets</td>
+
+            <td>Whenever someone presses you or asks directly, you find yourself unable to hold back a secret.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">2</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Ability to Smile</td>
+
+            <td>You feel laughter and warmth inside, yet your face is physically unable to form a smile.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">3</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Artistic Creativity</td>
+
+            <td>You cannot draw, paint, or compose original music. The creative spark vanishes when you try.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">4</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Cherished Doll or Toy</td>
+
+            <td>A beloved childhood doll or stuffed animal was misplaced that night at the fair.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">5</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Handwriting</td>
+
+            <td>Everything you write by hand is an incomprehensible scrawl that requires magic to decipher.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">6</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Sense of Direction</td>
+
+            <td>You cannot tell which way is north and easily lose your bearings when navigating.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">7</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Sense of Fashion</td>
+
+            <td>You have no eye for style whatsoever, chronically mismatching colours, patterns, and attire.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="text-center font-cinzel text-[var(--wine-accent)] font-bold">8</td>
+
+            <td class="font-semibold text-[var(--ink-dark)]">Three Inches of Height</td>
+
+            <td>You've always known deep down that you are three inches shorter than you ought to be.</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </section>
+
+
+
+    <!-- 4. Purple Callout Box at Bottom -->
+
+    <section>
+
+      <div class="purple-callout-box grid grid-cols-2 gap-3.5">
+
+        <!-- Left Column: Questions for Session Zero -->
+
+        <div class="pr-1">
+
+          <h3 class="font-cinzel text-[0.78rem] font-bold uppercase tracking-wider text-[var(--gold-light)] mb-1">
+
+            QUESTIONS FOR SESSION ZERO
+
+          </h3>
+
+          <p class="text-[0.80rem] leading-snug text-[#ded2ee] m-0">
+
+            How did your character's missing piece shape their life growing up? Do you already know another member of the party from your hometown, or are you meeting for the first time in the twilight queue?
+
+          </p>
+
+        </div>
+
+
+
+        <!-- Right Column: Cunning Over Cold Iron -->
+
+        <div class="pl-3 border-l border-[rgba(184,147,59,0.35)]">
+
+          <h3 class="font-cinzel text-[0.78rem] font-bold uppercase tracking-wider text-[var(--gold-light)] mb-1">
+
+            CUNNING OVER COLD IRON
+
+          </h3>
+
+          <p class="text-[0.80rem] leading-snug text-[#ded2ee] m-0">
+
+            Where you are going, silver tongues, sharp observation, clever argument, and theatrical flair open doors that drawn blades may lock shut. Build an adventurer curious enough to bargain with the strange.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- 4.5. Join Campaign CTA Button -->
+
+    <section class="text-center my-0.5">
+
+      <a id="join-campaign" href="https://www.dndbeyond.com/campaigns/join/82056483342437751" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gradient-to-r from-[#1c0d30] via-[#321752] to-[#1c0d30] hover:from-[#261242] hover:via-[#3e1d66] hover:to-[#261242] text-[#f7eed8] border border-[var(--gold-primary)] shadow-[0_2px_8px_rgba(0,0,0,0.25),inset_0_0_8px_rgba(184,147,59,0.25)] hover:shadow-[0_0_15px_rgba(184,147,59,0.4),inset_0_0_12px_rgba(184,147,59,0.35)] transition-all duration-200 group no-underline">
+
+        <span class="text-[var(--gold-light)] text-xs transition-transform duration-200 group-hover:scale-125">✦</span>
+
+        <span class="font-cinzel text-[0.82rem] font-bold tracking-[0.12em] uppercase text-[#fdf8ec] drop-shadow-sm">
+
+          Add Your Character &amp; Join on D&amp;D Beyond
+
+        </span>
+
+        <span class="text-[var(--gold-light)] text-xs transition-transform duration-200 group-hover:scale-125">✦</span>
+
+      </a>
+
+    </section>
+
+
+
+    <!-- 5. Footer -->
+
+    <footer class="pt-1 border-t border-[var(--gold-border)] flex items-center justify-between text-[0.74rem] text-[#635077] font-serif italic">
+
+      <span>Character &amp; Lore Primer</span>
+
+      <span>“The carnival goes round and round... The multiverse is our playground”</span>
+
+    </footer>
+
+
+
+  </main>
+
+
+
+
+
+
+  <div id="dice-stage" class="dice-stage" aria-hidden="true" hidden><canvas id="dice-canvas"></canvas></div>
+  <!-- Dice roll and row selection -->
+<script>
+// Eight triangular faces of an octahedron, projected in perspective.
+window.animateCarnivalD8 = (value, landed) => {
+  const layer = document.getElementById('dice-stage');
+  const canvas = document.getElementById('dice-canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { landed(); return Promise.resolve(); }
+  const faces = [];
+  for (const sy of [1,-1]) for (const sx of [1,-1]) for (const sz of [1,-1]) faces.push({vertices:[[0,sy,0],[sx,0,0],[0,0,sz]],normal:[sx,sy,sz],number:faces.length+1});
+  const target=faces[value-1].normal;
+  const finalY=-Math.atan2(target[0],target[2]);
+  const finalX=Math.atan2(target[1],Math.hypot(target[0],target[2]));
+  const sparks=Array.from({length:65},()=>({angle:Math.random()*Math.PI*2,speed:35+Math.random()*160,radius:1+Math.random()*2.5,delay:Math.random()*.15}));
+  let registered=false;
+  layer.hidden=false;
+  const start=performance.now();
+  function rotate(p, ax, ay) {
+    const x=Math.cos(ay)*p[0]+Math.sin(ay)*p[2], z=-Math.sin(ay)*p[0]+Math.cos(ay)*p[2];
+    return [x,Math.cos(ax)*p[1]-Math.sin(ax)*z,Math.sin(ax)*p[1]+Math.cos(ax)*z];
+  }
+  return new Promise(resolve=>{
+    function frame(now) {
+      const elapsed=(now-start)/1000, t=Math.min(1,elapsed/1.35), remaining=Math.pow(1-t,3);
+      const w=window.innerWidth,h=window.innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+      if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
+      ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+      const fade=Math.max(0,Math.min(1,(elapsed-1.85)/.6));
+      ctx.fillStyle=`rgba(9,5,16,${.52*Math.min(1,elapsed*5)*(1-fade)})`;ctx.fillRect(0,0,w,h);
+      const cx=w/2-w*.28*remaining,cy=h/2-Math.abs(Math.sin(t*Math.PI*3))*75*(1-t)+h*.25*remaining;
+      const size=Math.min(w*.33,h*.24,170);
+      const ax=finalX+remaining*Math.PI*7,ay=finalY+remaining*Math.PI*9;
+      const transformed=faces.map(face=>{const vertices=face.vertices.map(p=>rotate(p,ax,ay));return {...face,vertices,depth:vertices.reduce((s,p)=>s+p[2],0)/3};}).sort((a,b)=>a.depth-b.depth);
+      ctx.save();ctx.globalAlpha=1-fade;
+      ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(cx,cy+size*.9,size*.7,size*.15,0,0,Math.PI*2);ctx.fill();
+      for(const face of transformed){
+        const points=face.vertices.map(p=>[cx+p[0]*size*4/(4-p[2]),cy-p[1]*size*4/(4-p[2])]);
+        const light=Math.round(20+Math.max(0,face.depth)*42);
+        ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();
+        ctx.fillStyle=`hsl(274 40% ${light}%)`;ctx.fill();ctx.strokeStyle='#d6b565';ctx.lineWidth=1.6;ctx.stroke();
+        if(face.depth>.08){const px=points.reduce((s,p)=>s+p[0],0)/3,py=points.reduce((s,p)=>s+p[1],0)/3;
+          ctx.fillStyle='#fff0bc';ctx.font=`bold ${Math.round(size*(.12+face.depth*.23))}px Georgia`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(face.number),px,py);}
+      }
+      ctx.restore();
+      if(t===1&&!registered){registered=true;landed();}
+      if(elapsed>1.85){for(const spark of sparks){const age=(elapsed-1.85-spark.delay);if(age<0)continue;const distance=age*spark.speed;ctx.globalAlpha=Math.max(0,1-age/.6);ctx.fillStyle='#f1d387';ctx.beginPath();ctx.arc(cx+Math.cos(spark.angle)*(size*.45+distance),cy+Math.sin(spark.angle)*(size*.45+distance)+age*age*35,spark.radius,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;}
+      if(elapsed<2.6)requestAnimationFrame(frame);else{layer.hidden=true;ctx.clearRect(0,0,w,h);resolve();}
+    }
+    requestAnimationFrame(frame);
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const rows = [...document.querySelectorAll('#table-body tr')];
+  const button = document.getElementById('roll-d8');
+  const face = document.getElementById('d8-face');
+  const result = document.getElementById('d8-result');
+  if (!rows.length || !button || !face || !result) return;
+  let rolling = false;
+  const d8 = () => (window.crypto.getRandomValues(new Uint32Array(1))[0] & 7) + 1;
+  function select(row, rolled = false) {
+    rows.forEach(r => {r.classList.remove('row-active'); r.removeAttribute('aria-current');});
+    if (!row) {result.textContent = ''; return;}
+    row.classList.add('row-active'); row.setAttribute('aria-current', 'true');
+    const cells = row.querySelectorAll('td');
+    result.textContent = `${rolled ? 'You rolled' : 'You chose'} ${cells[0].textContent.trim()}: ${cells[1].textContent.trim()}`;
+  }
+  rows.forEach(row => {
+    row.tabIndex = 0;
+    function choose() { if (!rolling) select(row.classList.contains('row-active') ? null : row); }
+    row.addEventListener('click', choose);
+    row.addEventListener('keydown', event => {if (event.key === 'Enter' || event.key === ' ') {event.preventDefault(); choose();}});
+  });
+  button.addEventListener('click', () => {
+    if (rolling) return;
+    rolling = true; button.disabled = true; button.classList.add('is-rolling');
+    result.textContent = 'Rolling…';
+    const value = d8();
+    function landed() {
+      face.textContent = String(value);
+      select(rows[value - 1], true);
+    }
+    function finish() {
+      rolling = false; button.disabled = false; button.classList.remove('is-rolling');
+    }
+    if (typeof window.animateCarnivalD8 === 'function') window.animateCarnivalD8(value, landed).then(finish).catch(() => {landed(); finish();});
+    else {landed(); finish();}
+  });
+});
+
+</script>
+
+
+
+
+  <div id="ticket-transition" class="ticket-transition" role="status" aria-live="polite" hidden>
+    <div class="ticket-transition-inner">
+      <img src="assets/carnival-ticket.webp" alt="The Witchlight Carnival — Admit One" width="1000" height="481" decoding="async">
+    </div>
+  </div>
+  <script>
+(() => {
+  const link = document.getElementById('join-campaign');
+  const overlay = document.getElementById('ticket-transition');
+  if (!link || !overlay) return;
+  let departing = false;
+  let timer;
+  let fadeFrame, pauseTimer, soundContext;
+  const audioGraphs = new Map();
+  let effects = [];
+  let fadedAudio = [];
+  function context() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return null;
+    if (!soundContext) soundContext = new AudioContext();
+    soundContext.resume().catch(() => {});
+    return soundContext;
+  }
+  function fadeAudio() {
+    fadedAudio = ['carnival-music', 'opening-narration'].map(id => document.getElementById(id)).filter(Boolean).map(audio => {
+      let graph = audioGraphs.get(audio);
+      try {
+        const ctx = context();
+        if (ctx && !graph) {
+          const source = ctx.createMediaElementSource(audio);
+          const gain = ctx.createGain();
+          source.connect(gain); gain.connect(ctx.destination);
+          graph = {source, gain}; audioGraphs.set(audio, graph);
+        }
+        if (graph) {
+          const now = soundContext.currentTime;
+          graph.gain.gain.cancelScheduledValues(now);
+          graph.gain.gain.setValueAtTime(1, now);
+          graph.gain.gain.linearRampToValueAtTime(0, now + .65);
+        }
+      } catch { /* Use the element-volume fallback if Web Audio is unavailable. */ }
+      return {audio, volume: audio.volume, graph};
+    });
+    const started = performance.now();
+    function frame(now) {
+      const progress = Math.min(1, (now - started) / 650);
+      fadedAudio.forEach(({audio, volume, graph}) => {if (!graph) audio.volume = volume * (1 - progress);});
+      if (progress < 1) fadeFrame = window.requestAnimationFrame(frame);
+    }
+    fadeFrame = window.requestAnimationFrame(frame);
+    // Audio-timeline automation continues even if rendering frames are throttled.
+    pauseTimer = window.setTimeout(() => [...fadedAudio].reverse().forEach(({audio}) => audio.pause()), 700);
+  }
+  function paperCrackle() {
+    try {
+      if (!context()) return;
+      const duration = .8, rate = soundContext.sampleRate;
+      const buffer = soundContext.createBuffer(1, Math.ceil(rate * duration), rate);
+      const data = buffer.getChannelData(0);
+      // An airy paper hiss, with small dry crackles and a soft trailing decay.
+      for (let i = 0; i < data.length; i++) {
+        const t = i / rate;
+        const envelope = Math.min(1, t / .045) * Math.pow(Math.max(0, 1 - t / duration), 1.7);
+        data[i] = (Math.random() * 2 - 1) * envelope * .24;
+      }
+      for (let pop = 0; pop < 22; pop++) {
+        const at = Math.floor((.025 + Math.random() * .55) * rate);
+        const length = Math.floor(rate * (.006 + Math.random() * .015));
+        for (let i = 0; i < length && at + i < data.length; i++) data[at + i] += (Math.random() * 2 - 1) * Math.exp(-i / (length * .16)) * .65;
+      }
+      const source = soundContext.createBufferSource(); source.buffer = buffer;
+      const high = soundContext.createBiquadFilter(); high.type = 'highpass'; high.frequency.value = 650;
+      const low = soundContext.createBiquadFilter(); low.type = 'lowpass'; low.frequency.value = 4800;
+      const gain = soundContext.createGain(); gain.gain.value = .16;
+      source.connect(high); high.connect(low); low.connect(gain); gain.connect(soundContext.destination);
+      effects.push(source);
+      source.start(); source.stop(soundContext.currentTime + duration);
+      // Two quiet, glassy tones ring through the paper's final crackles.
+      for (const [frequency, delay] of [[1046.5, .3], [1568, .44]]) {
+        const note = soundContext.createOscillator();
+        const bell = soundContext.createGain();
+        const at = soundContext.currentTime + delay;
+        note.type = 'sine'; note.frequency.value = frequency;
+        bell.gain.setValueAtTime(0, at);
+        bell.gain.linearRampToValueAtTime(.035, at + .012);
+        bell.gain.exponentialRampToValueAtTime(.0001, at + .62);
+        bell.gain.setValueAtTime(0, at + .65);
+        note.connect(bell); bell.connect(soundContext.destination);
+        effects.push(note); note.start(at); note.stop(at + .66);
+      }
+    } catch { /* A sound-device failure must not block the campaign link. */ }
+  }
+  function reset() {
+    window.clearTimeout(timer);
+    window.clearTimeout(pauseTimer);
+    window.cancelAnimationFrame(fadeFrame);
+    effects.forEach(source => {try {source.stop();} catch {}}); effects = [];
+    fadedAudio.forEach(({audio, volume, graph}) => {
+      audio.volume = volume || (audio.id === 'carnival-music' ? .18 : 1);
+      if (graph) {const now = soundContext.currentTime; graph.gain.gain.cancelScheduledValues(now); graph.gain.gain.setValueAtTime(1, now);}
+    });
+    fadedAudio = [];
+    departing = false;
+    overlay.hidden = true;
+    link.removeAttribute('aria-disabled');
+  }
+  window.addEventListener('pageshow', reset);
+  link.addEventListener('click', (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (departing) return;
+    departing = true;
+    link.setAttribute('aria-disabled', 'true');
+    overlay.hidden = false;
+    fadeAudio();
+    paperCrackle();
+    timer = window.setTimeout(() => window.location.assign(link.href), 1450);
+  });
+})();
+
+</script>
+
+
+  <dialog id="map-lightbox" class="map-lightbox" aria-labelledby="map-lightbox-title" aria-describedby="map-help">
+    <header class="map-toolbar">
+      <h2 id="map-lightbox-title" class="font-cinzel">Festival Grounds</h2>
+      <button id="map-zoom-out" type="button" aria-label="Zoom out">−</button>
+      <output id="map-zoom-level" aria-label="Zoom level">100%</output>
+      <button id="map-zoom-in" type="button" aria-label="Zoom in">+</button>
+      <button id="map-fit" type="button" aria-label="Fit entire map">Fit</button>
+      <button id="map-close" type="button" aria-label="Close map" autofocus>✕</button>
+    </header>
+    <div id="map-stage" class="map-stage">
+      <img id="map-full-image" data-src="assets/carnival-map.png" alt="High-resolution visitor map of the Witchlight Carnival" draggable="false">
+    </div>
+    <p class="map-help"><span id="map-help">Pinch or scroll to zoom · Drag to explore</span><a href="assets/carnival-map.png" target="_blank" rel="noopener">Original image ↗</a></p>
+  </dialog>
+  <script>
+(() => {
+  const trigger = document.getElementById('inspect-map');
+  const dialog = document.getElementById('map-lightbox');
+  const stage = document.getElementById('map-stage');
+  const image = document.getElementById('map-full-image');
+  const output = document.getElementById('map-zoom-level');
+  if (!trigger || !dialog || !stage || !image) return;
+  let scale = 1, x = 0, y = 0, width = 0, height = 0, previousOverflow = '';
+  let lastTap = 0, lastTouchTime = 0, down = null, gesture = null;
+  const pointers = new Map();
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  function render() {
+    const maxX = Math.max(0, (width * scale - stage.clientWidth) / 2);
+    const maxY = Math.max(0, (height * scale - stage.clientHeight) / 2);
+    x = clamp(x, -maxX, maxX); y = clamp(y, -maxY, maxY);
+    image.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
+    output.textContent = `${Math.round(scale * 100)}%`;
+    stage.classList.toggle('is-zoomed', scale > 1);
+  }
+  function fit() {
+    if (!image.naturalWidth || !stage.clientWidth) return;
+    const ratio = Math.min(stage.clientWidth / image.naturalWidth, stage.clientHeight / image.naturalHeight);
+    width = image.naturalWidth * ratio; height = image.naturalHeight * ratio;
+    image.style.width = `${width}px`; image.style.height = `${height}px`;
+    scale = 1; x = y = 0; render();
+  }
+  function point(clientX, clientY) {
+    const rect = stage.getBoundingClientRect();
+    return {x: clientX - rect.left - rect.width / 2, y: clientY - rect.top - rect.height / 2};
+  }
+  function zoom(next, anchor = {x: 0, y: 0}) {
+    next = clamp(next, 1, 8);
+    const factor = next / scale;
+    x = anchor.x - (anchor.x - x) * factor;
+    y = anchor.y - (anchor.y - y) * factor;
+    scale = next; render();
+  }
+  function currentGesture() {
+    const pts = [...pointers.values()];
+    if (pts.length > 1) return {x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2, distance: Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y)};
+    return pts.length ? {...pts[0], distance: 0} : null;
+  }
+  trigger.addEventListener('click', (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || typeof dialog.showModal !== 'function') return;
+    event.preventDefault();
+    previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialog.showModal();
+    if (!image.getAttribute('src')) image.src = image.dataset.src;
+    fit();
+  });
+  image.addEventListener('load', fit);
+  image.addEventListener('error', () => { document.getElementById('map-help').textContent = 'Map could not load. Use “Original image” to try opening it directly.'; });
+  document.getElementById('map-close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('close', () => {
+    document.body.style.overflow = previousOverflow;
+    pointers.clear(); gesture = null; down = null; lastTap = 0;
+    trigger.focus({preventScroll: true});
+  });
+  document.getElementById('map-zoom-in').addEventListener('click', () => zoom(scale * 1.5));
+  document.getElementById('map-zoom-out').addEventListener('click', () => zoom(scale / 1.5));
+  document.getElementById('map-fit').addEventListener('click', fit);
+  stage.addEventListener('wheel', event => {
+    event.preventDefault();
+    zoom(scale * Math.exp(-event.deltaY * .002), point(event.clientX, event.clientY));
+  }, {passive: false});
+  stage.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.pointerType === 'touch') lastTouchTime = Date.now();
+    stage.setPointerCapture(event.pointerId);
+    const p = point(event.clientX, event.clientY);
+    pointers.set(event.pointerId, p);
+    down = pointers.size === 1 ? {x: event.clientX, y: event.clientY, time: Date.now(), touch: event.pointerType === 'touch'} : null;
+    gesture = currentGesture();
+  });
+  stage.addEventListener('pointermove', event => {
+    if (!pointers.has(event.pointerId)) return;
+    pointers.set(event.pointerId, point(event.clientX, event.clientY));
+    const next = currentGesture();
+    if (gesture && next) {
+      const factor = gesture.distance > 0 && next.distance > 0 ? next.distance / gesture.distance : 1;
+      const newScale = clamp(scale * factor, 1, 8);
+      const applied = newScale / scale;
+      x = next.x - (gesture.x - x) * applied;
+      y = next.y - (gesture.y - y) * applied;
+      scale = newScale; render();
+    }
+    gesture = next;
+  });
+  function endPointer(event) {
+    if (down && down.touch && event.type === 'pointerup' && Math.hypot(event.clientX - down.x, event.clientY - down.y) < 8 && Date.now() - down.time < 250) {
+      if (lastTap && Date.now() - lastTap < 320) { zoom(scale > 1 ? 1 : 2.5, point(event.clientX, event.clientY)); lastTap = 0; }
+      else lastTap = Date.now();
+    } else lastTap = 0;
+    pointers.delete(event.pointerId); down = null; gesture = currentGesture();
+  }
+  stage.addEventListener('pointerup', endPointer);
+  stage.addEventListener('pointercancel', endPointer);
+  stage.addEventListener('dblclick', event => {
+    event.preventDefault();
+    if (Date.now() - lastTouchTime < 500) return;
+    zoom(scale > 1 ? 1 : 2.5, point(event.clientX, event.clientY));
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.key === '+' || event.key === '=') zoom(scale * 1.5);
+    else if (event.key === '-') zoom(scale / 1.5);
+    else if (event.key === '0') fit();
+    else if (event.key === 'ArrowLeft') {x += 60; render();}
+    else if (event.key === 'ArrowRight') {x -= 60; render();}
+    else if (event.key === 'ArrowUp') {y += 60; render();}
+    else if (event.key === 'ArrowDown') {y -= 60; render();}
+    else return;
+    event.preventDefault();
+  });
+  window.addEventListener('resize', () => {if (dialog.open) fit();});
+})();
+
+</script>
+
+
+  <audio id="carnival-music" src="assets/carnival-song.mp3" preload="none" loop></audio>
+  <button id="music-toggle" class="music-toggle font-cinzel" type="button" aria-label="Play carnival music" aria-pressed="false" title="The Traveling Extravaganza Page (Remastered)">
+    <svg class="music-symbol" aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13M9 8l12-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="18" cy="16" rx="3" ry="2.5"/></svg>
+    <svg class="music-pause-icon" aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+    <span id="music-label">Play music</span>
+  </button>
+  <span id="music-status" class="music-sr-status" role="status" aria-live="polite"></span>
+
+<script>
+(() => {
+  const audio = document.getElementById('carnival-music');
+  const button = document.getElementById('music-toggle');
+  const label = document.getElementById('music-label');
+  const status = document.getElementById('music-status');
+  if (!audio || !button) return;
+  audio.volume = .18;
+  function sync() {
+    const playing = !audio.paused;
+    button.setAttribute('aria-pressed', String(playing));
+    button.setAttribute('aria-label', playing ? 'Pause carnival music' : 'Play carnival music');
+    button.title = playing ? 'Pause carnival music' : 'Play carnival music';
+    label.textContent = playing ? 'Pause music' : 'Play music';
+  }
+  audio.addEventListener('play', sync);
+  audio.addEventListener('pause', sync);
+  audio.addEventListener('error', () => {status.textContent = 'Music could not load. Tap Play music to try again.'; sync();});
+  button.addEventListener('click', async () => {
+    if (!audio.paused) {audio.pause(); return;}
+    button.disabled = true;
+    status.textContent = '';
+    try {if (audio.error) audio.load(); await audio.play();}
+    catch {status.textContent = 'Music could not start. Tap Play music to try again.';}
+    finally {button.disabled = false; sync();}
+  });
+  sync();
+})();
+
+</script>
+<audio id="opening-narration" src="assets/opening-narration.mp3" preload="none"></audio>
+<script>
+(() => {
+  const voice = document.getElementById('opening-narration');
+  const music = document.getElementById('carnival-music');
+  const toggle = document.getElementById('narration-toggle');
+  const label = document.getElementById('narration-label');
+  const stop = document.getElementById('narration-stop');
+  const status = document.getElementById('narration-status');
+  if (!voice || !toggle) return;
+  let musicVolume = null;
+  let cueArmed = false, cueCancelled = false, musicWasPlaying = false;
+  function duck() {
+    if (music && musicVolume === null) {musicVolume = music.volume; musicWasPlaying = !music.paused; music.volume = 0;}
+  }
+  function prepareCue() {
+    if (!music) return;
+    duck(); cueArmed = true; cueCancelled = false;
+    // Begin silent playback within the same user gesture as the narration.
+    // Keep the element active until the ending cue, including on mobile.
+    music.play().catch(() => {});
+  }
+  function cancelCue() {
+    cueArmed = false;
+    if (music && !musicWasPlaying) music.pause();
+    restore();
+  }
+  function finishCue() {
+    const play = cueArmed && !cueCancelled;
+    cueArmed = false;
+    if (play && music) {
+      music.currentTime = 0;
+      restore();
+      music.play().catch(() => {document.getElementById('music-status').textContent = 'Tap the music button to start the soundtrack.';});
+    } else restore();
+  }
+  function restore() {
+    if (music && musicVolume !== null) {music.volume = musicVolume; musicVolume = null;}
+  }
+  function sync() {
+    const playing = !voice.paused && !voice.ended;
+    const started = voice.currentTime > 0 && !voice.ended;
+    label.textContent = playing ? 'Pause narration' : started ? 'Resume narration' : 'Listen to the opening';
+    toggle.setAttribute('aria-label', label.textContent);
+    toggle.setAttribute('aria-pressed', String(playing));
+    stop.hidden = !(playing || started);
+  }
+  voice.addEventListener('play', () => {duck(); sync();});
+  voice.addEventListener('pause', () => {if (!voice.ended) cancelCue(); sync();});
+  voice.addEventListener('ended', () => {finishCue(); sync();});
+  voice.addEventListener('error', () => {cancelCue(); sync(); status.textContent = 'The narration could not load. Tap to try again.';});
+  document.getElementById('music-toggle')?.addEventListener('click', () => {
+    if (!cueArmed) return;
+    cueCancelled = true; cueArmed = false; restore();
+  });
+  toggle.addEventListener('click', async () => {
+    if (!voice.paused) {voice.pause(); return;}
+    toggle.disabled = true;
+    status.textContent = '';
+    try {
+      if (voice.error) voice.load();
+      if (voice.ended) voice.currentTime = 0;
+      prepareCue();
+      await voice.play();
+    } catch {cancelCue(); status.textContent = 'The narration could not start. Tap to try again.';}
+    finally {toggle.disabled = false; sync();}
+  });
+  stop.addEventListener('click', () => {voice.pause(); voice.currentTime = 0; cancelCue(); sync(); toggle.focus({preventScroll:true});});
+  sync();
+})();
+
+</script>
+</body>
+
+</html>
